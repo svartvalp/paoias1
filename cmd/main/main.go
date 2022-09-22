@@ -2,12 +2,10 @@ package main
 
 import (
 	"bufio"
-	"fmt"
-	"math/bits"
 	"os"
-	"strconv"
 
 	"github.com/svartvalp/paoias1/internal/parser"
+	"github.com/svartvalp/paoias1/internal/printer"
 	"github.com/svartvalp/paoias1/internal/runner"
 )
 
@@ -38,29 +36,10 @@ func main() {
 	}
 	run := runner.New(state)
 	run.Run()
-	// fmt.Printf("%+v", state)
-	for _, c := range state.Commands {
-		str := strconv.FormatInt(int64(c), 2)
-		fmt.Printf("%032s \n", str)
+	printer.Print(state)
+	wrFile, err := os.Create("./result.txt")
+	if err != nil {
+		panic(err)
 	}
-	fmt.Println()
-	byt := signed(2)
-	for _, b := range byt {
-		fmt.Print(b)
-	}
-}
-
-func unsigned(x uint32) []byte {
-	b := make([]byte, 32)
-	for i := range b {
-		if bits.LeadingZeros32(x) == 0 {
-			b[i] = 1
-		}
-		x = bits.RotateLeft32(x, 1)
-	}
-	return b
-}
-
-func signed(x int32) []byte {
-	return unsigned(uint32(x))
+	printer.PrintToFile(state, wrFile)
 }

@@ -54,12 +54,7 @@ func (r *Runner) PrepareCommand() (*command.Command, bool) {
 	if cmdVal == 0 {
 		return nil, false
 	}
-	cmd := cmdVal >> 16
-	lit := int16(cmdVal)
-	return &command.Command{
-		Type: command.Type(cmd),
-		Lit:  lit,
-	}, true
+	return command.ParseCommand(cmdVal), true
 }
 
 func (r *Runner) loadProcMap() {

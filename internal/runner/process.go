@@ -30,7 +30,7 @@ func (r *Runner) processIMEM(c command.Command) int16 {
 	if err != nil {
 		panic(err)
 	}
-	r.st.Mem[addr] = val
+	r.st.Mem[addr] = uint16(val)
 	return val
 }
 func (r *Runner) processIMEML(c command.Command) int16 {
@@ -38,7 +38,7 @@ func (r *Runner) processIMEML(c command.Command) int16 {
 	if err != nil {
 		panic(err)
 	}
-	r.st.Mem[addr] = c.Lit
+	r.st.Mem[addr] = uint16(c.Lit)
 	return c.Lit
 }
 func (r *Runner) processMTS(c command.Command) int16 {
@@ -47,11 +47,11 @@ func (r *Runner) processMTS(c command.Command) int16 {
 		panic(err)
 	}
 	val := r.st.Mem[addr]
-	err = r.st.Stack.Push(val)
+	err = r.st.Stack.Push(int16(val))
 	if err != nil {
 		panic(err)
 	}
-	return val
+	return int16(val)
 }
 func (r *Runner) processINC(c command.Command) int16 {
 	val, err := r.st.Stack.Pop()
@@ -109,7 +109,7 @@ func (r *Runner) processSTR(c command.Command) int16 {
 	if err != nil {
 		panic(err)
 	}
-	r.st.Registers[addr] = val
+	r.st.Registers[addr] = uint16(val)
 	return val
 }
 func (r *Runner) processRTS(c command.Command) int16 {
@@ -118,11 +118,11 @@ func (r *Runner) processRTS(c command.Command) int16 {
 		panic(err)
 	}
 	val := r.st.Registers[addr]
-	err = r.st.Stack.Push(val)
+	err = r.st.Stack.Push(int16(val))
 	if err != nil {
 		panic(err)
 	}
-	return val
+	return int16(val)
 }
 func (r *Runner) processSUM(c command.Command) int16 {
 	fir, err := r.st.Stack.Pop()
@@ -143,7 +143,7 @@ func (r *Runner) processSUM(c command.Command) int16 {
 func (r *Runner) processJEZ(c command.Command) int16 {
 	val := r.st.Flags[state.EZ]
 	if val {
-		r.st.CommandCounter = int32(c.Lit)
+		r.st.CommandCounter = uint32(c.Lit)
 		r.jumped = true
 	}
 	return 0
@@ -151,7 +151,7 @@ func (r *Runner) processJEZ(c command.Command) int16 {
 func (r *Runner) processJGZ(c command.Command) int16 {
 	val := r.st.Flags[state.GZ]
 	if val {
-		r.st.CommandCounter = int32(c.Lit)
+		r.st.CommandCounter = uint32(c.Lit)
 		r.jumped = true
 	}
 	return 0
@@ -159,14 +159,14 @@ func (r *Runner) processJGZ(c command.Command) int16 {
 func (r *Runner) processJLS(c command.Command) int16 {
 	val := r.st.Flags[state.LZ]
 	if val {
-		r.st.CommandCounter = int32(c.Lit)
+		r.st.CommandCounter = uint32(c.Lit)
 		r.jumped = true
 	}
 	return 0
 }
 
 func (r *Runner) processJP(c command.Command) int16 {
-	r.st.CommandCounter = int32(c.Lit)
+	r.st.CommandCounter = uint32(c.Lit)
 	r.jumped = true
 	return 0
 }

@@ -83,7 +83,9 @@ func (p *Parser) ProcessState() (*state.State, error) {
 			}
 			c.Lit = int16(lit)
 		}
-		mCmd := int32(c.Cmd)<<16 + int32(c.Lit)
+		a := uint32(c.Cmd) << 16
+		b := uint32(uint16(c.Lit))
+		mCmd := a + b
 		p.st.SetCommand(i, mCmd)
 	}
 

@@ -5,11 +5,11 @@ import (
 )
 
 type State struct {
-	CommandCounter int32
-	Registers      []int16
+	CommandCounter uint32
+	Registers      []uint16
 	Stack          *stack.Stack
-	Commands       []int32
-	Mem            []int16
+	Commands       []uint32
+	Mem            []uint16
 	Flags          []bool
 }
 
@@ -21,7 +21,7 @@ const (
 	LZ
 )
 
-func (s *State) SetCommand(index int, val int32) {
+func (s *State) SetCommand(index int, val uint32) {
 	s.Commands[index] = val
 }
 
@@ -36,10 +36,10 @@ func (s *State) RestoreFlags() {
 func New() *State {
 	return &State{
 		CommandCounter: 0,
-		Registers:      make([]int16, 4),
+		Registers:      make([]uint16, 16),
 		Stack:          stack.New(),
-		Commands:       make([]int32, 64),
-		Mem:            make([]int16, 64),
+		Commands:       make([]uint32, 64),
+		Mem:            make([]uint16, 64),
 		Flags:          make([]bool, 3),
 	}
 }
